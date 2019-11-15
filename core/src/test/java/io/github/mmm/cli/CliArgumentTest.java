@@ -7,11 +7,6 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.mmm.cli.CliArgument;
-import io.github.mmm.cli.CliLongOption;
-import io.github.mmm.cli.CliShortOption;
-import io.github.mmm.cli.CliValue;
-
 /**
  * Test of {@link CliArgument}.
  */
@@ -26,10 +21,11 @@ public class CliArgumentTest extends Assertions {
     // when
     List<CliArgument> cliArgs = CliArgument.parse(args);
     // then
-    assertThat(cliArgs).containsExactly(new CliArgument[] { new CliShortOption("-a"), new CliShortOption("-b"),
-    new CliShortOption("-c"), new CliLongOption("--help"), new CliLongOption("--foo-bar"), new CliValue("some", false),
-    new CliLongOption("--foo-bar"), new CliValue("some", false), new CliShortOption("-x"), new CliValue("true", false),
-    new CliValue("-file", true) });
+    assertThat(cliArgs)
+        .containsExactly(new CliArgument[] { new CliShortOption("-a", false), new CliShortOption("-b", false),
+        new CliShortOption("-c", false), new CliLongOption("--help", false), new CliLongOption("--foo-bar", true),
+        new CliValue("some", false), new CliLongOption("--foo-bar", false), new CliValue("some", false),
+        new CliShortOption("-x", true), new CliValue("true", false), new CliValue("-file", true) });
   }
 
 }

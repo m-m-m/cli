@@ -11,10 +11,11 @@ public class CliShortOption extends CliOption {
    * The constructor.
    *
    * @param arg the {@link #get() argument short option} (e.g. "-h").
+   * @param assignment - the {@link #isAssignment() assignment} flag.
    */
-  public CliShortOption(String arg) {
+  public CliShortOption(String arg, boolean assignment) {
 
-    super(arg);
+    super(arg, assignment);
     if ((arg.length() != 2) || (arg.charAt(0) != '-') || (arg.charAt(1) == '-')) {
       throw new IllegalArgumentException(arg);
     }

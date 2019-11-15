@@ -122,24 +122,26 @@ public abstract class CliArgument {
         if (arg.equals(END_OPTIONS)) {
           endOpts = true;
         } else {
+          boolean assignment = false;
           int equalsIndex = arg.indexOf('=');
           CliValue value = null;
           if (equalsIndex > 0) {
+            assignment = true;
             String optValue = arg.substring(equalsIndex + 1);
             value = new CliValue(optValue, false);
             arg = arg.substring(0, equalsIndex);
           }
           if (arg.startsWith("--")) {
-            cliArgs.add(new CliLongOption(arg));
+            cliArgs.add(new CliLongOption(arg, assignment));
           } else {
             int len = arg.length();
             if (len == 1) {
               cliArgs.add(new CliValue(arg, false));
             } else if (len == 2) {
-              cliArgs.add(new CliShortOption(arg));
+              cliArgs.add(new CliShortOption(arg, assignment));
             } else {
               for (int i = 1; i < len; i++) {
-                cliArgs.add(new CliShortOption("-" + arg.charAt(i)));
+                cliArgs.add(new CliShortOption("-" + arg.charAt(i), assignment));
               }
             }
           }
