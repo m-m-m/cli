@@ -13,7 +13,7 @@ public class CliShortOption extends CliOption {
    * @param arg the {@link #get() argument short option} (e.g. "-h").
    * @param assignment - the {@link #isAssignment() assignment} flag.
    */
-  public CliShortOption(String arg, boolean assignment) {
+  CliShortOption(String arg, boolean assignment) {
 
     super(arg, assignment);
     if ((arg.length() != 2) || (arg.charAt(0) != '-') || (arg.charAt(1) == '-')) {

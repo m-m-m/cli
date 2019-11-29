@@ -6,11 +6,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test of {@link CliArgument}.
+ * Test of {@link CliArgs}.
  */
 public class CliArgsTest extends Assertions {
 
-  /** Test of {@link CliArgument#parse(String...)}. */
+  /** Test of {@link CliArgs#CliArgs(String...)}. */
   @Test
   public void testParse() {
 
@@ -19,30 +19,55 @@ public class CliArgsTest extends Assertions {
     // when
     CliArgs cliArgs = new CliArgs(args);
     // then
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliShortOption("-a", false));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliShortOption("-b", false));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliShortOption("-c", false));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliLongOption("--help", false));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliLongOption("--foo-bar", true));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliValue("some", false));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliLongOption("--foo-bar", false));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliValue("some", false));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliShortOption("-x", true));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliValue("true", false));
-    assertThat(cliArgs.hasNext()).isTrue();
-    assertThat(cliArgs.next()).isEqualTo(new CliValue("-file", true));
-    assertThat(cliArgs.hasNext()).isFalse();
-    assertThat(cliArgs.next()).isNull();
+    assertThat(cliArgs.isEmpty()).isFalse();
+    assertThat(cliArgs.getSize()).isEqualTo(11);
+    CliArgument argument = cliArgs.getFirst();
+    assertThat(argument.get()).isEqualTo("-a");
+    assertThat(argument.isShortOption()).isTrue();
+    assertThat(((CliOption) argument).isAssignment()).isFalse();
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("-b");
+    assertThat(argument.isShortOption()).isTrue();
+    assertThat(((CliOption) argument).isAssignment()).isFalse();
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("-c");
+    assertThat(argument.isShortOption()).isTrue();
+    assertThat(((CliOption) argument).isAssignment()).isFalse();
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("--help");
+    assertThat(argument.isLongOption()).isTrue();
+    assertThat(((CliOption) argument).isAssignment()).isFalse();
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("--foo-bar");
+    assertThat(argument.isLongOption()).isTrue();
+    assertThat(((CliOption) argument).isAssignment()).isTrue();
+    assertThat(argument.getValue()).isEqualTo("some");
+    assertThat(argument.getValues()).containsExactly("some");
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("some");
+    assertThat(argument.isValue()).isTrue();
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("--foo-bar");
+    assertThat(argument.isLongOption()).isTrue();
+    assertThat(((CliOption) argument).isAssignment()).isFalse();
+    assertThat(argument.getValue()).isEqualTo("some");
+    assertThat(argument.getValues()).containsExactly("some");
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("some");
+    assertThat(argument.isValue()).isTrue();
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("-x");
+    assertThat(argument.isShortOption()).isTrue();
+    assertThat(((CliOption) argument).isAssignment()).isTrue();
+    assertThat(argument.getValue()).isEqualTo("true");
+    assertThat(argument.getValues()).containsExactly("true", "-file");
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("true");
+    assertThat(argument.isValue()).isTrue();
+    argument = argument.getNext();
+    assertThat(argument.get()).isEqualTo("-file");
+    assertThat(argument.isValue()).isTrue();
+    assertThat(argument.getNext()).isNull();
   }
 
 }

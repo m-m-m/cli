@@ -15,7 +15,7 @@ public class CliValue extends CliArgument {
    * @param arg the {@link #get() argument value}.
    * @param endOptions the {@link #isEndOptions() end options} flag.
    */
-  public CliValue(String arg, boolean endOptions) {
+  CliValue(String arg, boolean endOptions) {
 
     super(arg);
     this.endOptions = endOptions;
@@ -55,18 +55,6 @@ public class CliValue extends CliArgument {
   public boolean isEndOptions() {
 
     return this.endOptions;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-
-    if (obj == this) {
-      return true;
-    } else if (!super.equals(obj)) {
-      return false;
-    }
-    CliValue other = (CliValue) obj;
-    return this.endOptions == other.endOptions;
   }
 
 }

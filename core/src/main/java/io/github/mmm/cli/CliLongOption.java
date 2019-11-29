@@ -13,7 +13,7 @@ public class CliLongOption extends CliOption {
    * @param arg the {@link #get() argument long option} (e.g. "--help").
    * @param assignment - the {@link #isAssignment() assignment} flag.
    */
-  public CliLongOption(String arg, boolean assignment) {
+  CliLongOption(String arg, boolean assignment) {
 
     super(arg, assignment);
     if ((arg.length() < 3) || !arg.startsWith(CliArgument.END_OPTIONS)) {

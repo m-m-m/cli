@@ -11,4 +11,11 @@
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
   <description>Module to build a command-line-interface and parse arguments easier.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mmm-base</artifactId>
+    </dependency>
+  </dependencies>
 </project>

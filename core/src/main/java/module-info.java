@@ -115,5 +115,14 @@
  * Of course that was just the beginning as we provide a higher-level module to make it even simpler.
  */
 module io.github.mmm.cli {
+
+  requires transitive io.github.mmm.base;
+
   exports io.github.mmm.cli;
+
+  exports io.github.mmm.cli.exception;
+
+  exports io.github.mmm.cli.io;
+
+  exports io.github.mmm.cli.io.impl;
 }

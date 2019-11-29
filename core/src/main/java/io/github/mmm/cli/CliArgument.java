@@ -3,15 +3,14 @@
 package io.github.mmm.cli;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A single argument of a {@code main} method from a command-line-interface (CLI). A {@link CliArgument} is either a
  * {@link CliOption} or a {@link CliValue}.
  *
- * @see CliArgs#next()
+ * @see CliArgs#getFirst()
+ * @see #getNext()
  */
 public abstract class CliArgument {
 
@@ -24,6 +23,8 @@ public abstract class CliArgument {
   public static final String END_OPTIONS = "--";
 
   final String arg;
+
+  CliArgument next;
 
   /**
    * The constructor.
@@ -82,78 +83,86 @@ public abstract class CliArgument {
    */
   public abstract boolean isEndOptions();
 
-  @Override
-  public int hashCode() {
+  /**
+   * @return the next {@link CliArgument} or {@code null} if this is the last argument.
+   */
+  public CliArgument getNext() {
 
-    return this.arg.hashCode();
+    return this.next;
   }
 
-  @Override
-  public boolean equals(Object obj) {
+  /**
+   * @return the {@link #getNext() next} {@link CliOption} (skipping all {@link #getNext() next} {@link CliValue}s) or
+   *         {@code null} if no more {@link CliOption} follows.
+   */
+  public CliOption getNextOption() {
 
-    if (obj == this) {
-      return true;
-    } else if ((obj == null) || (obj.getClass() != getClass())) {
-      return false;
+    CliArgument current = this.next;
+    while ((current != null) && !current.isOption()) {
+      current = current.next;
     }
-    CliArgument other = (CliArgument) obj;
-    return Objects.equals(this.arg, other.arg);
+    return (CliOption) current;
+  }
+
+  /**
+   * @return the {@link #getNext() next} {@link CliValue} (skipping all {@link #getNext() next} {@link CliOption}s) or
+   *         {@code null} if no more {@link CliValue} follows.
+   */
+  public CliValue getNextValue() {
+
+    CliArgument current = this.next;
+    while ((current != null) && !current.isValue()) {
+      current = current.next;
+    }
+    return (CliValue) current;
+  }
+
+  /**
+   * If this is a {@link CliOption} followed by a {@link CliValue}, this method will return that value (e.g. for "--key
+   * foo" it will return "foo"). If however such {@link CliOption} is followed by another {@link CliOption} or is the
+   * last {@link CliArgument}, this method will return {@code null} (e.g. for "-x -z"). Finally, if this is a
+   * {@link CliValue}, this method will return its {@link #get() value}.
+   *
+   * @return the same as {@link #get()} if this is a {@link CliValue}, otherwise if this a {@link CliOption} the value
+   *         of the {@link #getNext() next} argument if a {@link CliValue} or otherwise {@code null}.
+   */
+  public String getValue() {
+
+    if (isValue()) {
+      return this.arg;
+    } else if ((this.next != null) && (this.next.isValue())) {
+      return this.next.get();
+    }
+    return null;
+  }
+
+  /**
+   * Like {@link #getValue()} but returns all the next values.
+   *
+   * @return a {@link List} with the {@link #getValue() value} of this {@link CliArgument} followed by all
+   *         {@link #getNext() next} {@link CliValue}s available. If {@link #getValue()} return {@code null} this method
+   *         will return an {@link List#isEmpty() empty} {@link List}.
+   */
+  public List<String> getValues() {
+
+    List<String> values = new ArrayList<>();
+    CliArgument argument;
+    if (isValue()) {
+      argument = this;
+    } else {
+      argument = this.next;
+    }
+    while ((argument != null) && (argument.isValue())) {
+      values.add(argument.get());
+      argument = argument.next;
+    }
+    return values;
   }
 
   @Override
   public String toString() {
 
     return this.arg;
-  }
-
-  /**
-   * @param args the command-line arguments from {@code main} method.
-   * @return the parsed {@link List} of {@link CliArgument}s.
-   */
-  public static List<CliArgument> parse(String... args) {
-
-    boolean endOpts = false;
-    List<CliArgument> cliArgs = new ArrayList<>(args.length + 2);
-    for (int argsIndex = 0; argsIndex < args.length; argsIndex++) {
-      String arg = args[argsIndex];
-      if (endOpts) {
-        cliArgs.add(new CliValue(arg, true));
-      } else if (arg.startsWith("-")) {
-        if (arg.equals(END_OPTIONS)) {
-          endOpts = true;
-        } else {
-          boolean assignment = false;
-          int equalsIndex = arg.indexOf('=');
-          CliValue value = null;
-          if (equalsIndex > 0) {
-            assignment = true;
-            String optValue = arg.substring(equalsIndex + 1);
-            value = new CliValue(optValue, false);
-            arg = arg.substring(0, equalsIndex);
-          }
-          if (arg.startsWith("--")) {
-            cliArgs.add(new CliLongOption(arg, assignment));
-          } else {
-            int len = arg.length();
-            if (len == 1) {
-              cliArgs.add(new CliValue(arg, false));
-            } else if (len == 2) {
-              cliArgs.add(new CliShortOption(arg, assignment));
-            } else {
-              for (int i = 1; i < len; i++) {
-                cliArgs.add(new CliShortOption("-" + arg.charAt(i), assignment));
-              }
-            }
-          }
-          if (value != null) {
-            cliArgs.add(value);
-          }
-        }
-      } else {
-        cliArgs.add(new CliValue(arg, false));
-      }
-    }
-    return Collections.unmodifiableList(cliArgs);
   }
 
 }
