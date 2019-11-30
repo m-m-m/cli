@@ -27,7 +27,7 @@
  * static method. <br>
  * <h3>The Solution</h3>
  *
- * As a solution we provide {@link io.github.mmm.cli.CliArgs}:
+ * As a minimal low-level solution we provide {@link io.github.mmm.cli.CliArgs}:
  *
  * <pre>
  * public class Main {
@@ -42,15 +42,15 @@
  *
  *   public static void main(String[] args) {
  *
- *     int exitCode = run(new CliArgs(args));
+ *     int exitCode = run(new {@link io.github.mmm.cli.CliArgs}(args));
  *     System.exit(exitCode);
  *   }
  *
- *   public int run(CliArgs args) {
+ *   public int run({@link io.github.mmm.cli.CliArgs} args) {
  *
- *     while (cliArgs.hasNext()) {
- *       CliArgument arg = cliArgs.next();
- *       if (arg.isOption()) {
+ *     {@link io.github.mmm.cli.CliArgument} arg = args.{@link io.github.mmm.cli.CliArgs#getFirst() getFirst()};
+ *     while (arg != null) {
+ *       if (arg.{@link io.github.mmm.cli.CliArgument#isOption() isOption()}) {
  *         switch (arg.get()) {
  *           case "-h":
  *           case "--help":
@@ -74,8 +74,9 @@
  *             return -1;
  *         }
  *       } else {
- *         this.values.add(arg.get());
+ *         this.values.add(arg.{@link io.github.mmm.cli.CliArgument#get() get()});
  *       }
+ *       arg = arg.{@link io.github.mmm.cli.CliArgument#next() next()};
  *     }
  *     // do something
  *   }
@@ -106,13 +107,14 @@
  * App --option-name option-value
  * </pre>
  *
- * You {@code App} does not need to be rewritten to also accept:
+ * Your {@code App} does not need to be rewritten to also accept:
  *
  * <pre>
  * App --option-name=option-value
  * </pre>
  *
- * Of course that was just the beginning as we provide a higher-level module to make it even simpler.
+ * Of course the {@code Main} program was still complex and this is just the beginning. We provide a higher-level module
+ * {@code mmm-nls-cli} to make it even much simpler and add additional cool features.
  */
 module io.github.mmm.cli {
 

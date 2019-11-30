@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 import io.github.mmm.base.exception.ApplicationException;
-import io.github.mmm.base.text.Localizable;
+import io.github.mmm.base.i18n.Localizable;
 import io.github.mmm.cli.exception.CliException;
 import io.github.mmm.cli.io.CliOut;
 

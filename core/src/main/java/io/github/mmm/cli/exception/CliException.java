@@ -3,7 +3,7 @@
 package io.github.mmm.cli.exception;
 
 import io.github.mmm.base.exception.ApplicationException;
-import io.github.mmm.base.text.Localizable;
+import io.github.mmm.base.i18n.Localizable;
 import io.github.mmm.cli.CliArgument;
 
 /**
