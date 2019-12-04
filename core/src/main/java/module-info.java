@@ -38,7 +38,7 @@
  *
  *   private boolean force;
  *
- *   List<String> values = new ArrayList<>();
+ *   List{@literal <String>} values = new ArrayList{@literal <>}();
  *
  *   public static void main(String[] args) {
  *
@@ -76,7 +76,7 @@
  *       } else {
  *         this.values.add(arg.{@link io.github.mmm.cli.CliArgument#get() get()});
  *       }
- *       arg = arg.{@link io.github.mmm.cli.CliArgument#next() next()};
+ *       arg = arg.{@link io.github.mmm.cli.CliArgument#getNext() getNext()};
  *     }
  *     // do something
  *   }
