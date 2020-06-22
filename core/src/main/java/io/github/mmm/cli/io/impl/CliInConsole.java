@@ -42,7 +42,9 @@ public class CliInConsole implements CliIn {
   @Override
   public void flush() {
 
-    this.console.flush();
+    if (this.console != null) {
+      this.console.flush();
+    }
   }
 
 }
