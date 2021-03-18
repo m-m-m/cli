@@ -9,13 +9,14 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
   <artifactId>mmm-cli-parent</artifactId>
-  <version>${revision}${changelist}</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>Module to build a command-line-interface and parse arguments easier.</description>
 
   <properties>
     <mmm.repository>cli</mmm.repository>
+    <revision>0-SNAPSHOT</revision>
   </properties>
 
   <modules>
