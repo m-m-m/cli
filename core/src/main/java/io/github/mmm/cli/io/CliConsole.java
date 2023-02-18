@@ -4,6 +4,7 @@ package io.github.mmm.cli.io;
 
 import java.io.Flushable;
 import java.io.PrintStream;
+import java.util.Locale;
 
 /**
  * Interface to give access to {@link CliOut output} and {@link CliIn}.
@@ -14,6 +15,11 @@ public interface CliConsole extends Flushable {
    * @return the current {@link CliLogLevel} of this console.
    */
   CliLogLevel getLogLevel();
+
+  /**
+   * @return the {@link Locale} for the user.
+   */
+  Locale getLocale();
 
   /**
    * @return the {@link CliOut} for {@link #getStdOut() standard out}.

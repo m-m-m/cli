@@ -21,6 +21,8 @@
 
   <modules>
     <module>core</module>
+    <module>main</module>
+    <module>sync</module>
   </modules>
 
   <dependencyManagement>
@@ -32,7 +34,17 @@
       </dependency>
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>mmm-base-parent</artifactId>
+        <artifactId>mmm-nls-cli</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mmm-nls-sync</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mmm-bean-parent</artifactId>
         <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>

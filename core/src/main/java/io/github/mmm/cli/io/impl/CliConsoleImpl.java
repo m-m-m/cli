@@ -103,9 +103,7 @@ public class CliConsoleImpl implements CliConsole {
     reset();
   }
 
-  /**
-   * @return the {@link Locale} to use.
-   */
+  @Override
   public Locale getLocale() {
 
     return this.locale;

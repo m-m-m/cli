@@ -95,7 +95,7 @@ public abstract class CliMain {
   /**
    * @return the version of this program.
    */
-  protected String getVersion() {
+  public String getVersion() {
 
     String version = null;
     Class<?> mainClass = getClass();

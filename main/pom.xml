@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.m-m-m</groupId>
+    <artifactId>mmm-cli-parent</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <artifactId>mmm-nls-cli</artifactId>
+  <packaging>jar</packaging>
+  <name>${project.artifactId}</name>
+  <description>Combines mmm-cli with mmm-nls for command-line-interfaces (CLI) with native language support (NLS).</description>
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mmm-nls</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mmm-cli</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mmm-bean-factory</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mmm-l10n-all</artifactId>
+    </dependency>
+  </dependencies>
+</project>
