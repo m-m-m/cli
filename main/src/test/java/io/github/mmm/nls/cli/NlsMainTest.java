@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 import io.github.mmm.cli.io.impl.CliConsoleImpl;
@@ -98,9 +99,11 @@ public class NlsMainTest extends Assertions {
     // when
     int code = prg.run(args);
     // then
-    assertThat(err.toString().replace("\r", "")).isEqualTo(expectedErr);
-    assertThat(out.toString().replace("\r", "")).isEqualTo(expectedOut);
-    assertThat(code).isEqualTo(expectedCode);
+    SoftAssertions soft = new SoftAssertions();
+    soft.assertThat(err.toString().replace("\r", "")).isEqualTo(expectedErr);
+    soft.assertThat(out.toString().replace("\r", "")).isEqualTo(expectedOut);
+    soft.assertThat(code).isEqualTo(expectedCode);
+    soft.assertAll();
   }
 
 }
