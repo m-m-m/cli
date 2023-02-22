@@ -117,7 +117,6 @@ public abstract class NlsMain extends CliMain {
     }
     for (int i = this.commands.size() - 1; i >= 0; i--) {
       CliCommand command = this.commands.get(i);
-      System.out.println("checking command " + command.getType().getSimpleName());
       boolean commandMatches = true;
       for (WritableProperty<?> property : command.getProperties()) {
         String name = property.getName();
@@ -168,7 +167,6 @@ public abstract class NlsMain extends CliMain {
         }
       }
       if (commandMatches) {
-        System.out.println("Command matches: " + command);
         command.validateOrThrow();
         return command.run(this);
       }
