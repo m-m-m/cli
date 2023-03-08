@@ -7,23 +7,14 @@
     <artifactId>mmm-cli-parent</artifactId>
     <version>${revision}</version>
   </parent>
-  <artifactId>mmm-cli</artifactId>
+  <artifactId>mmm-cli-nls-sync</artifactId>
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
-  <description>Module to build a command-line-interface and parse arguments easier.</description>
-
+  <description>Provides a command-line-interface to synchronize resource-bundles for localization.</description>
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>mmm-nls</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>mmm-bean-factory</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>mmm-l10n-all</artifactId>
+      <artifactId>mmm-cli</artifactId>
     </dependency>
   </dependencies>
 </project>

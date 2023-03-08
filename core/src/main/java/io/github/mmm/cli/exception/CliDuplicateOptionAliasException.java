@@ -2,7 +2,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.mmm.cli.exception;
 
-import io.github.mmm.cli.CliOption;
+import io.github.mmm.cli.arg.CliOption;
 
 /**
  * {@link CliException} thrown if two synonymous {@link CliOption}s have been specified.
