@@ -3,7 +3,7 @@ package io.github.mmm.cli;
 /**
  * Test to rebuild git CLI API.
  */
-public class Git extends CliMain {
+public class GitCli extends CliMain {
 
   @Override
   protected void addCommands() {
@@ -20,7 +20,7 @@ public class Git extends CliMain {
    */
   public static void main(String[] args) {
 
-    new Git().runAndExit(args);
+    new GitCli().runAndExit(args);
   }
 
 }

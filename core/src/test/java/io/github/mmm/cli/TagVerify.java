@@ -5,6 +5,7 @@ package io.github.mmm.cli;
 import io.github.mmm.bean.Mandatory;
 import io.github.mmm.bean.PropertyAlias;
 import io.github.mmm.property.booleans.BooleanProperty;
+import io.github.mmm.property.container.list.ListProperty;
 
 /**
  * The tag verify command.
@@ -15,5 +16,9 @@ public interface TagVerify extends GitAbstractTagWithName {
   @PropertyAlias({ "--verify", "-v" })
   @Mandatory
   BooleanProperty Verify();
+
+  /** @return the format pattern. */
+  @PropertyAlias({ "--format" })
+  ListProperty<String> Format();
 
 }
