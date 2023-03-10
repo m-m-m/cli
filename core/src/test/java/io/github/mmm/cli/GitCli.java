@@ -1,3 +1,5 @@
+/* Copyright (c) The m-m-m Team, Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.mmm.cli;
 
 /**
@@ -5,14 +7,12 @@ package io.github.mmm.cli;
  */
 public class GitCli extends CliMain {
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void addCommands() {
 
     super.addCommands();
-    add(TagCreate.class);
-    add(TagDelete.class);
-    add(TagList.class);
-    add(TagVerify.class);
+    group(/* "tag" */).add(TagCreate.class, TagDelete.class, TagList.class, TagVerify.class);
   }
 
   /**

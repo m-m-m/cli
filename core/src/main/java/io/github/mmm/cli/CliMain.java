@@ -6,39 +6,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-import io.github.mmm.bean.BeanFactory;
-import io.github.mmm.bean.ReadableBean;
 import io.github.mmm.cli.arg.CliArgs;
 import io.github.mmm.cli.arg.CliArgument;
 import io.github.mmm.cli.arg.CliOption;
 import io.github.mmm.cli.arg.CliValue;
-import io.github.mmm.cli.arg.CliValueType;
 import io.github.mmm.cli.command.CliCommand;
+import io.github.mmm.cli.command.CliCommandAutoComplete;
 import io.github.mmm.cli.command.CliCommandHelp;
 import io.github.mmm.cli.command.CliCommandVersion;
+import io.github.mmm.cli.container.CliCommandContainerGroup;
+import io.github.mmm.cli.container.CliContainer;
+import io.github.mmm.cli.container.impl.AbstractCliCommandContainerGroup;
+import io.github.mmm.cli.container.impl.CliCommandContainerImpl;
+import io.github.mmm.cli.container.impl.CliContainerImpl;
 import io.github.mmm.cli.exception.CliDuplicateOptionsException;
 import io.github.mmm.cli.exception.CliException;
 import io.github.mmm.cli.exception.CliInvalidUsageException;
 import io.github.mmm.cli.exception.CliNoArgumentsException;
 import io.github.mmm.cli.io.CliConsole;
 import io.github.mmm.cli.io.impl.CliConsoleImpl;
-import io.github.mmm.cli.property.CliCommandWithProperties;
-import io.github.mmm.cli.property.CliCommands;
-import io.github.mmm.cli.property.CliPropertyInfo;
-import io.github.mmm.property.AttributeReadOnly;
-import io.github.mmm.property.WritableProperty;
-import io.github.mmm.property.booleans.BooleanProperty;
-import io.github.mmm.property.container.collection.WritableCollectionProperty;
-import io.github.mmm.property.object.WritableSimpleProperty;
 
 /**
  * This is the abstract base class for a main-program. <br>
@@ -52,9 +43,7 @@ public abstract class CliMain {
   /** @see #console() */
   protected final CliConsole console;
 
-  private final List<CliCommand> commands;
-
-  private CliCommands cliCommands;
+  private final CliContainerImpl container;
 
   /**
    * The constructor.
@@ -77,17 +66,25 @@ public abstract class CliMain {
     } else {
       this.console = console;
     }
-    this.commands = new ArrayList<>();
+    this.container = new CliContainerImpl(this.console);
     addCommands();
   }
 
   /**
-   * {@link #add(Class) Adds} the {@link CliCommand}s for this program.
+   * {@link CliAddCommand#add(Class) Adds} the {@link CliCommand}s for this program.
    */
+  @SuppressWarnings("unchecked")
   protected void addCommands() {
 
-    add(CliCommandHelp.class);
-    add(CliCommandVersion.class);
+    group().add(CliCommandHelp.class, CliCommandVersion.class, CliCommandAutoComplete.class);
+  }
+
+  /**
+   * @return the {@link CliContainer} with the groups, commands and their properties.
+   */
+  public CliContainer getContainer() {
+
+    return this.container;
   }
 
   /**
@@ -134,40 +131,21 @@ public abstract class CliMain {
   }
 
   /**
-   * @param commandInterface the {@link Class} reflecting the {@link CliCommand} interface to register.
+   * @return the root group where {@link CliCommand}s can be {@link CliAddCommand#add(Class) added}.
    */
-  protected void add(Class<? extends CliCommand> commandInterface) {
+  protected CliAddCommand group() {
 
-    CliCommand command = BeanFactory.get().create(commandInterface);
-    add(command);
+    return this.container;
   }
 
   /**
-   * @param command the {@link CliCommand} to register.
+   * @param name the {@link CliCommandContainerGroup#getName() group name}.
+   * @return the group with the given {@link CliCommandContainerGroup#getName() group name} where {@link CliCommand}s
+   *         can be {@link CliAddCommand#add(Class) added}.
    */
-  protected void add(CliCommand command) {
+  protected CliAddCommand group(String name) {
 
-    Objects.requireNonNull(command, "command");
-    this.commands.add(command);
-  }
-
-  /**
-   * @return the {@link List} with the available {@link CliCommand}s.
-   */
-  public List<CliCommand> getCommands() {
-
-    return this.commands;
-  }
-
-  /**
-   * @return the {@link CliCommands}.
-   */
-  public CliCommands getCliCommands() {
-
-    if (this.cliCommands == null) {
-      this.cliCommands = CliCommands.of(this.commands, this.console);
-    }
-    return this.cliCommands;
+    return this.container.getOrCreateGroup(name);
   }
 
   /**
@@ -180,16 +158,6 @@ public abstract class CliMain {
    *         (default).
    */
   protected boolean isTolerateDuplicateOptions() {
-
-    return true;
-  }
-
-  /**
-   * @return {@code true} if the help shall be printed per {@link CliCommand} with all its arguments (options and
-   *         parameters), {@code false} otherwise (to first print all {@link CliCommand}s and then print all arguments
-   *         together).
-   */
-  public boolean isPrintHelpPerCommand() {
 
     return true;
   }
@@ -253,147 +221,22 @@ public abstract class CliMain {
         throw new CliDuplicateOptionsException(duplicatedOptions);
       }
     }
-    for (CliCommandWithProperties commandWithProperties : getCliCommands().get()) {
-      boolean commandMatches = bindCommandArguments(commandWithProperties, args);
-      if (commandMatches) {
-        CliCommand command = commandWithProperties.getCommand();
-        command.validateOrThrow();
-        return command.run(this);
+    for (AbstractCliCommandContainerGroup group : this.container.getGroups()) {
+      int commandCount = group.getCommandCount();
+      for (int i = 0; i < commandCount; i++) {
+        CliCommandContainerImpl commandContainer = group.getCommand(i);
+        boolean commandMatches = commandContainer.bindCommandArguments(args);
+        if (commandMatches) {
+          CliCommand command = commandContainer.getCommand();
+          command.validateOrThrow();
+          return command.run(this);
+        }
       }
     }
     if (args.isEmpty()) {
       throw new CliNoArgumentsException();
     }
     throw new CliInvalidUsageException(args);
-  }
-
-  private boolean bindCommandArguments(CliCommandWithProperties commandWithProperties, CliArgs args) {
-
-    CliArgument argument = args.getFirst();
-    Set<String> mandatoryProperties = commandWithProperties.collectMandatoryProperties();
-    int valueIndex = 0;
-    CliCommand command = commandWithProperties.getCommand();
-    while (argument != null) {
-      CliPropertyInfo propertyInfo;
-      if (argument.isOption()) {
-        String alias = argument.get();
-        propertyInfo = commandWithProperties.getPropertyInfo(alias);
-        if (propertyInfo == null) {
-          this.console.debug().logFormat("Undefined option %s for command %s", alias,
-              command.getType().getSimpleName());
-          return false;
-        }
-      } else {
-        String alias = Integer.toString(valueIndex);
-        propertyInfo = commandWithProperties.getPropertyInfo(alias);
-        if (propertyInfo == null) {
-          this.console.debug().log("Too many values - value #" + (valueIndex + 1) + " with alias " + alias
-              + " is undefined for command " + command.getType().getSimpleName());
-          return false;
-        }
-        valueIndex++;
-      }
-      String propertyName = propertyInfo.getPropertyName();
-      WritableProperty<?> property = command.getRequiredProperty(propertyName);
-      argument = setValue(property, argument, propertyInfo);
-      mandatoryProperties.remove(propertyName);
-    }
-    return mandatoryProperties.isEmpty();
-  }
-
-  private CliArgument setValue(WritableProperty<?> property, CliArgument arg, CliPropertyInfo propertyInfo) {
-
-    if (arg == null) {
-      return null;
-    }
-    CliArgument next = arg.getNext();
-    CliValue value;
-    if (arg.isOption()) {
-      if ((next != null) && next.isValue()) {
-        value = (CliValue) next;
-      } else if (property instanceof BooleanProperty) {
-        ((BooleanProperty) property).set(Boolean.TRUE);
-        value = null;
-      } else {
-        throw new IllegalArgumentException("Option '" + arg.get() + "' has to be followed by a value of type "
-            + property.getValueClass().getSimpleName());
-      }
-    } else {
-      value = (CliValue) arg;
-    }
-    if (value != null) {
-      next = setValue(value, property, propertyInfo);
-    }
-    return next;
-  }
-
-  private CliArgument setValue(CliValue value, WritableProperty<?> property, CliPropertyInfo propertyInfo) {
-
-    if (property instanceof WritableSimpleProperty) {
-      String valueAsString = value.get();
-      if (property instanceof BooleanProperty) {
-        BooleanProperty booleanProperty = (BooleanProperty) property;
-        CliArgument next = value;
-        Boolean b = Boolean.TRUE;
-        if ((propertyInfo.getIndex() != -1) && propertyInfo.getAliases().contains(valueAsString)) {
-          next = value.getNext();
-        } else if ((value.getValueType() == CliValueType.OPTION_ASSIGNMENT)) {
-          b = booleanProperty.parse(valueAsString);
-          next = value.getNext();
-        }
-        booleanProperty.set(b);
-        return next;
-      }
-      ((WritableSimpleProperty<?>) property).setAsString(valueAsString);
-    } else if (property instanceof WritableCollectionProperty) {
-      WritableCollectionProperty<?, ?> collectionProperty = (WritableCollectionProperty<?, ?>) property;
-      Collection<?> collection = collectionProperty.getOrCreate();
-      WritableProperty<?> valueProperty = collectionProperty.getValueProperty();
-      if (valueProperty instanceof WritableSimpleProperty) {
-        WritableSimpleProperty<?> valueSimpleProperty = (WritableSimpleProperty<?>) valueProperty;
-        CliValueType type = value.getValueType();
-        String valueAsString = value.get();
-        if (type == CliValueType.OPTION_ASSIGNMENT) {
-          addValueToCollection(collection, valueAsString, property, valueSimpleProperty);
-        } else {
-          for (String item : valueAsString.split(",")) {
-            addValueToCollection(collection, item, property, valueSimpleProperty);
-          }
-        }
-      } else {
-        invalidProperty(property, valueProperty);
-      }
-    } else {
-      invalidProperty(property, null);
-    }
-    return value.getNext();
-  }
-
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  private void addValueToCollection(Collection collection, String valueAsString, WritableProperty<?> property,
-      WritableSimpleProperty<?> valueProperty) {
-
-    try {
-      Object element = valueProperty.parse(valueAsString);
-      collection.add(element);
-    } catch (UnsupportedOperationException e) {
-      invalidProperty(property, valueProperty);
-    } catch (Exception e) {
-      throw new IllegalStateException("", e);
-    }
-  }
-
-  private void invalidProperty(WritableProperty<?> property, WritableProperty<?> valueProperty) {
-
-    String propertyName = property.getName();
-    AttributeReadOnly lock = property.getMetadata().getLock();
-    if (lock instanceof ReadableBean) {
-      propertyName = propertyName + " (from " + ((ReadableBean) lock).getType().getQualifiedName() + ")";
-    }
-    throw new IllegalStateException("Invalid property " + propertyName + " of type "
-        + property.getClass().getSimpleName() + " having type " + property.getValueClass().getSimpleName()
-        + ((valueProperty == null) ? "" : " with value type " + valueProperty.getValueClass())
-        + ". CLI programs shall only use simple properties or collection properties with simple value properties!");
   }
 
   /**

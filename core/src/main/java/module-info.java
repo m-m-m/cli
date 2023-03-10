@@ -35,7 +35,7 @@
  *   &#64;Override
  *   protected void addCommands() {
  *     super.addCommands();
- *     add(MyCommand.class);
+ *     group().add(MyCommand.class);
  *   }
  *
  *   public static void main(String[] args) {
@@ -44,9 +44,10 @@
  * }
  * </pre>
  *
- * As you can see your main method is pretty simple. The only specific part is the {@code add(MyCommand.class)}
- * statement, where you could even add multiple commands. However, let us first continue with the example code of the
- * command:
+ * As you can see your main program is pretty simple and straight forward. The only specific part is the
+ * {@code group().add(MyCommand.class)} statement. Here you could even provide multiple commands to add. Further you
+ * could add them to a {@link io.github.mmm.cli.CliMain#group(String) named group} so their help arguments will be
+ * grouped together. However, let us first continue with the example code of the command:
  *
  * <pre>
  * public interface MyCommand extends CliCommand {
@@ -61,10 +62,11 @@
  *   BooleanProperty Force();
  *
  *   &#64;Mandatory
- *   &#64;PropertyAlias({ "--data" })
+ *   &#64;PropertyAlias("--data")
  *   ListProperty<String> Data();
  *
  *   &#64;Mandatory
+ *   &#64;PropertyAlias("0") // 0-based order index required for multiple values
  *   StringProperty Value();
  *
  *   &#64;Override
@@ -134,10 +136,10 @@
  * </pre>
  *
  * Also there is support for {@code --} in case you want to provide an argument value starting with a hyphen (e.g.
- * "-my-value" what would conflict with the force short option):
+ * "-foo-value" what would otherwise be considered as short options):
  *
  * <pre>
- * {@literal MyProgram -vdf --data file1,file2 -- -my-value}
+ * {@literal MyProgram -vdf --data file1,file2 -- -foo-value}
  * </pre>
  *
  * Further, to provide option values starting with a hyphen or comma always use option assignments:
@@ -161,12 +163,12 @@ module io.github.mmm.cli {
 
   exports io.github.mmm.cli.command;
 
+  exports io.github.mmm.cli.container;
+
   exports io.github.mmm.cli.exception;
 
   exports io.github.mmm.cli.io;
 
   // exports io.github.mmm.cli.io.impl;
-
-  exports io.github.mmm.cli.property;
 
 }

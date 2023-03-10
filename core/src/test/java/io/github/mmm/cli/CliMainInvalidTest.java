@@ -62,8 +62,7 @@ public class CliMainInvalidTest extends Assertions {
       Class<? extends Throwable> exception) {
 
     try {
-      GenericTestProgram prg = new GenericTestProgram(commandInterface);
-      prg.getCliCommands();
+      new GenericTestProgram(commandInterface);
       failBecauseExceptionWasNotThrown(exception);
     } catch (RuntimeException e) {
       assertThat(e).isInstanceOf(exception);

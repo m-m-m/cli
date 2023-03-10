@@ -12,6 +12,20 @@ import io.github.mmm.cli.CliMain;
 public interface CliCommand extends WritableBean {
 
   /**
+   * {@link io.github.mmm.bean.PropertyAlias} to signal that any value including an unmatched option (value starting
+   * with a hyphen like "-value") is allowed here. Shall never be used together with option alias.
+   */
+  public String ALIAS_WILDCARD = "*";
+
+  /**
+   * @return {@code true} in case this command shall not be included in the help output.
+   */
+  default boolean hideFromHelp() {
+
+    return false;
+  }
+
+  /**
    * Executes this {@link CliCommand}. Has to be implemented as default method.
    *
    * @param main the {@link CliMain} program.

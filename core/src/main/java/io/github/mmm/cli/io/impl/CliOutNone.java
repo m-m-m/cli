@@ -33,6 +33,7 @@ public class CliOutNone implements CliOut {
   @Override
   public void logFormat(String format, Object... args) {
 
+    assert (String.format(format, args) != null); // detect format errors during development
   }
 
   @Override

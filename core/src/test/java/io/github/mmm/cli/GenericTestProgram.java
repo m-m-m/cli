@@ -17,7 +17,7 @@ public class GenericTestProgram extends CliMain {
   public GenericTestProgram(Class<? extends CliCommand> commandInterface) {
 
     super();
-    add(commandInterface);
+    group().add(commandInterface);
   }
 
 }

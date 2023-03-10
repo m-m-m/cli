@@ -32,8 +32,8 @@ public class CliMainTest extends Assertions {
       + "  value  Value of test.\n\n" //
       + "JVM options:\n" //
       + "  -Duser.language  The locale for translation of this commandline output (e.g. '-Duser.language=de' for German).\n"//
-      + "  -Xloggc          Writes all garbage collector activity to the specified logfile (e.g. '-Xloggc:/home/user/log/gc.log').\n" //
-      + "  -Xmx             The maximum heap size (e.g. '-Xmx8G' for 8 gigabyte of heap memory).\n";
+      + "  -Xmx             The maximum heap size (e.g. '-Xmx8G' for 8 gigabyte of heap memory).\n" //
+      + "  -Xloggc          Writes all garbage collector activity to the specified logfile (e.g. '-Xloggc:/home/user/log/gc.log').\n";
 
   private static final String HELP_DE = "Verwendung:\n" //
       + "io.github.mmm.cli.TestProgram --help|-h\n" //
@@ -50,8 +50,8 @@ public class CliMainTest extends Assertions {
       + "  value  Wert des Tests.\n\n" //
       + "JVM Optionen:\n" //
       + "  -Duser.language  Die Sprache zur Übersetzung dieser Kommandozeilenausgabe (z.B. '-Duser.language=en' für Englisch).\n"//
-      + "  -Xloggc          Schreibt alle Aktivitäten des Garbage Collectors in die angegebene Logdatei (z.B. '-Xloggc:/home/user/log/gc.log').\n" //
-      + "  -Xmx             Die maximale Heap Größe (z.B. '-Xmx8G' für 8 Gigabyte Heap-Speicher).\n";
+      + "  -Xmx             Die maximale Heap Größe (z.B. '-Xmx8G' für 8 Gigabyte Heap-Speicher).\n" //
+      + "  -Xloggc          Schreibt alle Aktivitäten des Garbage Collectors in die angegebene Logdatei (z.B. '-Xloggc:/home/user/log/gc.log').\n";
 
   /** Test of {@link CliMain} with help option. */
   @Test
@@ -98,17 +98,21 @@ public class CliMainTest extends Assertions {
   private void assertProgram(int expectedCode, String expectedOut, String expectedErr, Locale locale, String... args) {
 
     // given
+    Locale l = Locale.getDefault();
+    if (locale != null) {
+      Locale.setDefault(locale);
+    }
     TestProgram prg = new TestProgram();
     CliConsoleImpl console = (CliConsoleImpl) prg.console();
-    if (locale != null) {
-      console.setLocale(locale);
-    }
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     console.setStdOut(new PrintStream(out));
     ByteArrayOutputStream err = new ByteArrayOutputStream();
     console.setStdErr(new PrintStream(err));
     // when
     int code = prg.run(args);
+    if (locale != null) {
+      Locale.setDefault(l);
+    }
     // then
     SoftAssertions soft = new SoftAssertions();
     soft.assertThat(err.toString().replace("\r", "")).isEqualTo(expectedErr);

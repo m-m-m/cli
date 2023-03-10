@@ -43,7 +43,7 @@ public class CliBundle {
    */
   public String get(String key) {
 
-    return get(key, null);
+    return get(key, "");
   }
 
   /**

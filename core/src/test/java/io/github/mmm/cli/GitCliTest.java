@@ -9,6 +9,7 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import io.github.mmm.cli.arg.CliArgs;
 import io.github.mmm.cli.io.impl.CliConsoleImpl;
 
 /**
@@ -61,11 +62,12 @@ public class GitCliTest extends Assertions {
     ByteArrayOutputStream err = new ByteArrayOutputStream();
     console.setStdErr(new PrintStream(err));
     // when
-    int code = prg.run(args);
+    int code = prg.run(new CliArgs(args));
     // then
     SoftAssertions soft = new SoftAssertions();
     soft.assertThat(out.toString().replace("\r", "")).isEqualTo(expectedOut);
     soft.assertThat(code).isEqualTo(0);
+    soft.assertThat(err.toString()).isEmpty();
     soft.assertAll();
   }
 

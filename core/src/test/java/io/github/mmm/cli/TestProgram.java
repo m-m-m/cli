@@ -11,7 +11,7 @@ public class TestProgram extends CliMain {
   protected void addCommands() {
 
     super.addCommands();
-    add(CliCommandTest.class);
+    group().add(CliCommandTest.class);
   }
 
   /**

@@ -15,7 +15,7 @@ public interface CliCommandVersion extends CliCommand {
   /** @return flag to activate this command. */
   @PropertyAlias({ "--version", "-v" })
   @Mandatory
-  BooleanProperty Version(); // NlsBundleCli.INSTANCE.optVersion()
+  BooleanProperty Version();
 
   @Override
   default int run(CliMain main) {

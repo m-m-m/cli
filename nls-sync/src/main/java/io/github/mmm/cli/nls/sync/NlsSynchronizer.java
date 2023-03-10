@@ -14,7 +14,7 @@ public class NlsSynchronizer extends CliMain {
   protected void addCommands() {
 
     super.addCommands();
-    add(Synchronizer.class);
+    group().add(Synchronizer.class);
   }
 
   /**
