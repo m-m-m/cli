@@ -141,7 +141,7 @@ public final class CliPropertyContainerImpl implements CliPropertyContainer, Com
       }
       sb.append(alias);
     }
-    if (sb.isEmpty()) {
+    if (sb.length() == 0) {
       sb.append(CaseSyntax.UNCAPITALIZED.convert(this.propertyName));
     }
     this.index = i;
