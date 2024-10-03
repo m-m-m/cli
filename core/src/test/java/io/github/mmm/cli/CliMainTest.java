@@ -59,7 +59,7 @@ public class CliMainTest extends Assertions {
 
     String expectedErr = "";
 
-    assertProgram(0, HELP_EN, expectedErr, "-h");
+    assertProgram(0, HELP_EN, expectedErr, Locale.ROOT, "-h");
     assertProgram(0, HELP_DE, expectedErr, Locale.GERMAN, "--help");
   }
 
