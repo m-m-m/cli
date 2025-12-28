@@ -14,12 +14,12 @@ public class CliValueTest extends Assertions {
   @Test
   public void testDefaults() {
 
-    // given
+    // arrange
     String value = "value";
     CliValueType type = CliValueType.VALUE_BEFORE_OPTION;
-    // when
+    // act
     CliValue cliValue = new CliValue(value, type);
-    // then
+    // assert
     assertThat(cliValue.get()).isSameAs(value);
     assertThat(cliValue.getValue()).isSameAs(value);
     assertThat(cliValue.toString()).isEqualTo(value);
@@ -37,12 +37,12 @@ public class CliValueTest extends Assertions {
   @Test
   public void testEndOptions() {
 
-    // given
+    // arrange
     String value = "its magic";
     CliValueType type = CliValueType.VALUE_END_OPTION;
-    // when
+    // act
     CliValue cliValue = new CliValue(value, type);
-    // then
+    // assert
     assertThat(cliValue.get()).isSameAs(value);
     assertThat(cliValue.getValue()).isSameAs(value);
     assertThat(cliValue.toString()).isEqualTo(value);

@@ -14,11 +14,11 @@ public class CliArgsTest extends Assertions {
   @Test
   public void testParse() {
 
-    // given
+    // arrange
     String[] args = { "-abc", "--help", "--foo-bar=some", "--foo-bar", "some", "-x=true", "--", "-file" };
-    // when
+    // act
     CliArgs cliArgs = new CliArgs(args);
-    // then
+    // assert
     assertThat(cliArgs.isEmpty()).isFalse();
     assertThat(cliArgs.getSize()).isEqualTo(11);
     CliArgument argument = cliArgs.getFirst();
@@ -74,11 +74,11 @@ public class CliArgsTest extends Assertions {
   @Test
   public void testOptionValue() {
 
-    // given
+    // arrange
     String[] args = { "--option", "value" };
-    // when
+    // act
     CliArgs cliArgs = new CliArgs(args);
-    // then
+    // assert
     assertThat(cliArgs.isEmpty()).isFalse();
     assertThat(cliArgs.getSize()).isEqualTo(2);
     CliArgument argument = cliArgs.getFirst();
@@ -95,11 +95,11 @@ public class CliArgsTest extends Assertions {
   @Test
   public void testValueType() {
 
-    // given
+    // arrange
     String[] args = { "first", "--option", "value1", "value2", "--key=value", "--", "arg" };
-    // when
+    // act
     CliArgs cliArgs = new CliArgs(args);
-    // then
+    // assert
     assertThat(cliArgs.isEmpty()).isFalse();
     assertThat(cliArgs.getSize()).isEqualTo(7);
     CliArgument argument = cliArgs.getFirst();
@@ -147,11 +147,11 @@ public class CliArgsTest extends Assertions {
   @Test
   public void testEdgeCase() {
 
-    // given
+    // arrange
     String[] args = { "-", "-=", "=", ",", "--", "-f" };
-    // when
+    // act
     CliArgs cliArgs = new CliArgs(args);
-    // then
+    // assert
     assertThat(cliArgs.isEmpty()).isFalse();
     assertThat(cliArgs.getSize()).isEqualTo(5);
     CliArgument argument = cliArgs.getFirst();

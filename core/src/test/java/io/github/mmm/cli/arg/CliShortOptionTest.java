@@ -16,12 +16,12 @@ public class CliShortOptionTest extends Assertions {
   @Test
   public void testDefaults() {
 
-    // given
+    // arrange
     String option = "-x";
     boolean assignment = false;
-    // when
+    // act
     CliShortOption cliOption = new CliShortOption(option, assignment);
-    // then
+    // assert
     assertThat(cliOption.get()).isSameAs(option);
     assertThat(cliOption.getValue()).isNull();
     assertThat(cliOption.toString()).isEqualTo(option);

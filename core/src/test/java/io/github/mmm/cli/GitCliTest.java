@@ -54,16 +54,16 @@ public class GitCliTest extends Assertions {
 
   private void assertProgram(String expectedOut, String... args) {
 
-    // given
+    // arrange
     GitCli prg = new GitCli();
     CliConsoleImpl console = (CliConsoleImpl) prg.console();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     console.setStdOut(new PrintStream(out));
     ByteArrayOutputStream err = new ByteArrayOutputStream();
     console.setStdErr(new PrintStream(err));
-    // when
+    // act
     int code = prg.run(new CliArgs(args));
-    // then
+    // assert
     SoftAssertions soft = new SoftAssertions();
     soft.assertThat(out.toString().replace("\r", "")).isEqualTo(expectedOut);
     soft.assertThat(code).isEqualTo(0);

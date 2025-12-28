@@ -15,11 +15,11 @@ public class CliPropertyContainerImplTest extends Assertions {
   @Test
   public void testCompareTo() {
 
-    // given
+    // arrange
     CliPropertyContainerImpl[] order = { keyword("0", 0), reqOptFlag("1"), reqOptNoFlag("2"), addOptFlag("3"),
     reqValue("4", 1), addValue("5", 2) };
 
-    // when + then in order
+    // act + assert in order
     SoftAssertions assertions = new SoftAssertions();
     for (int start = 0; start < order.length; start++) {
       CliPropertyContainerImpl left = order[start];

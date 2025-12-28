@@ -97,7 +97,7 @@ public class CliMainTest extends Assertions {
 
   private void assertProgram(int expectedCode, String expectedOut, String expectedErr, Locale locale, String... args) {
 
-    // given
+    // arrange
     Locale l = Locale.getDefault();
     if (locale != null) {
       Locale.setDefault(locale);
@@ -108,12 +108,12 @@ public class CliMainTest extends Assertions {
     console.setStdOut(new PrintStream(out));
     ByteArrayOutputStream err = new ByteArrayOutputStream();
     console.setStdErr(new PrintStream(err));
-    // when
+    // act
     int code = prg.run(args);
     if (locale != null) {
       Locale.setDefault(l);
     }
-    // then
+    // assert
     SoftAssertions soft = new SoftAssertions();
     soft.assertThat(err.toString().replace("\r", "")).isEqualTo(expectedErr);
     soft.assertThat(out.toString().replace("\r", "")).isEqualTo(expectedOut);

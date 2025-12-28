@@ -16,12 +16,12 @@ public class CliLongOptionTest extends Assertions {
   @Test
   public void testDefaults() {
 
-    // given
+    // arrange
     String option = "--long-option";
     boolean assignment = false;
-    // when
+    // act
     CliLongOption cliOption = new CliLongOption(option, assignment);
-    // then
+    // assert
     assertThat(cliOption.get()).isSameAs(option);
     assertThat(cliOption.getValue()).isNull();
     assertThat(cliOption.toString()).isEqualTo(option);
