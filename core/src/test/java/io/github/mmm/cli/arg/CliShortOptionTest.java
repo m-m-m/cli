@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test of {@link CliShortOption}.
  */
-public class CliShortOptionTest extends Assertions {
+class CliShortOptionTest extends Assertions {
 
   /** Test of {@link CliShortOption}. */
   @Test
-  public void testDefaults() {
+  void testDefaults() {
 
     // arrange
     String option = "-x";
@@ -37,7 +37,7 @@ public class CliShortOptionTest extends Assertions {
 
   /** Test of {@link CliShortOption} with invalid value. */
   @Test
-  public void testInvalid() {
+  void testInvalid() {
 
     for (String invalid : new String[] { "", "x", "--", "--x", "-xy" }) {
       assertThrows(IllegalArgumentException.class, () -> {

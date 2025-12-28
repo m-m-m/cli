@@ -15,11 +15,11 @@ import io.github.mmm.cli.io.impl.CliConsoleImpl;
 /**
  * Test of {@link GitCli}.
  */
-public class GitCliTest extends Assertions {
+class GitCliTest extends Assertions {
 
   /** Test of {@link GitCli} (git tag -a release/1.0.0 ...). */
   @Test
-  public void testGitTagCreate() {
+  void testGitTagCreate() {
 
     assertProgram(
         "TagCreate(readonly=false,dynamic,Annotate=true,CommitOrObject=null,Edit=null,File=null,Force=true,Message=[this is a message],NoSign=null,Sign=null,SignKey=null,Tag=true,TagName=release/1.0.0)\n",
@@ -28,7 +28,7 @@ public class GitCliTest extends Assertions {
 
   /** Test of {@link GitCli} (git tag -l ...). */
   @Test
-  public void testGitTagList() {
+  void testGitTagList() {
 
     assertProgram(
         "TagList(readonly=false,dynamic,Color=never,Column=hash,Format=[%(refname:strip=2)],IgnoreCase=null,List=true,Sort=[date],Tag=true)\n",
@@ -37,7 +37,7 @@ public class GitCliTest extends Assertions {
 
   /** Test of {@link GitCli} (git tag -d release/1.0.0). */
   @Test
-  public void testGitTagDelete() {
+  void testGitTagDelete() {
 
     assertProgram("TagDelete(readonly=false,dynamic,Delete=true,Tag=true,TagName=release/1.0.0)\n", "tag", "-d",
         "release/1.0.0");
@@ -45,7 +45,7 @@ public class GitCliTest extends Assertions {
 
   /** Test of {@link GitCli} (git tag -v release/1.0.0). */
   @Test
-  public void testGitTagVerify() {
+  void testGitTagVerify() {
 
     assertProgram(
         "TagVerify(readonly=false,dynamic,Format=[%(refname:strip=2)],Tag=true,TagName=release/1.0.0,Verify=true)\n",

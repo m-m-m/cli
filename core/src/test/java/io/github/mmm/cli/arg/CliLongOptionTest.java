@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test of {@link CliLongOption}.
  */
-public class CliLongOptionTest extends Assertions {
+class CliLongOptionTest extends Assertions {
 
   /** Test of {@link CliLongOption}. */
   @Test
-  public void testDefaults() {
+  void testDefaults() {
 
     // arrange
     String option = "--long-option";
@@ -37,7 +37,7 @@ public class CliLongOptionTest extends Assertions {
 
   /** Test of {@link CliLongOption} with invalid value. */
   @Test
-  public void testInvalid() {
+  void testInvalid() {
 
     for (String invalid : new String[] { "", "x", "xy", "-x", "--" }) {
       assertThrows(IllegalArgumentException.class, () -> {

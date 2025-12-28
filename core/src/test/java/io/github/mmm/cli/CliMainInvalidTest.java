@@ -13,11 +13,11 @@ import io.github.mmm.cli.command.CliCommand;
 /**
  * Test of {@link CliMain} with invalid {@link CliCommand}(s).
  */
-public class CliMainInvalidTest extends Assertions {
+class CliMainInvalidTest extends Assertions {
 
   /** Test of {@link GenericTestProgram} with {@link CliCommandInvalidValueIndexStart}. */
   @Test
-  public void testInvalidValueIndexStart() {
+  void testInvalidValueIndexStart() {
 
     Class<? extends CliCommand> commandInterface = CliCommandInvalidValueIndexStart.class;
     checkInvalidCommand(commandInterface,
@@ -26,7 +26,7 @@ public class CliMainInvalidTest extends Assertions {
 
   /** Test of {@link GenericTestProgram} with {@link CliCommandInvalidValueIndexGap}. */
   @Test
-  public void testInvalidValueIndexGap() {
+  void testInvalidValueIndexGap() {
 
     Class<? extends CliCommand> commandInterface = CliCommandInvalidValueIndexGap.class;
     checkInvalidCommand(commandInterface,
@@ -35,7 +35,7 @@ public class CliMainInvalidTest extends Assertions {
 
   /** Test of {@link GenericTestProgram} with {@link CliCommandInvalidValueIndexDuplicate}. */
   @Test
-  public void testInvalidValueIndexDuplicate() {
+  void testInvalidValueIndexDuplicate() {
 
     Class<? extends CliCommand> commandInterface = CliCommandInvalidValueIndexDuplicate.class;
     checkInvalidCommand(commandInterface,
@@ -45,7 +45,7 @@ public class CliMainInvalidTest extends Assertions {
 
   /** Test of {@link GenericTestProgram} with {@link CliCommandInvalidOptionDuplicate}. */
   @Test
-  public void testInvalidOptionDuplicate() {
+  void testInvalidOptionDuplicate() {
 
     Class<? extends CliCommand> commandInterface = CliCommandInvalidOptionDuplicate.class;
     checkInvalidCommand(commandInterface,

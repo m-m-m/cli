@@ -15,7 +15,7 @@ import io.github.mmm.cli.io.impl.CliConsoleImpl;
 /**
  * Test of {@link CliMain}.
  */
-public class CliMainTest extends Assertions {
+class CliMainTest extends Assertions {
 
   private static final String HELP_EN = "Usage:\n" //
       + "io.github.mmm.cli.TestProgram --help|-h\n" //
@@ -55,7 +55,7 @@ public class CliMainTest extends Assertions {
 
   /** Test of {@link CliMain} with help option. */
   @Test
-  public void testHelp() {
+  void testHelp() {
 
     String expectedErr = "";
 
@@ -65,7 +65,7 @@ public class CliMainTest extends Assertions {
 
   /** Test of {@link CliMain} with version option. */
   @Test
-  public void testVersion() {
+  void testVersion() {
 
     String expectedOut = "1.2.3.4\n";
     String expectedErr = "";
@@ -76,7 +76,7 @@ public class CliMainTest extends Assertions {
 
   /** Test of {@link CliMain} ({@link TestProgram}) with custom option. */
   @Test
-  public void testCustom() {
+  void testCustom() {
 
     assertProgram(0, "42\n", "", "--mode", "JUnit", "42");
     assertProgram(1, "",
@@ -85,7 +85,7 @@ public class CliMainTest extends Assertions {
 
   /** Test of {@link CliMain} ({@link TestProgram}) with multiple values for keys. */
   @Test
-  public void testMultiValue() {
+  void testMultiValue() {
 
     assertProgram(0, "42\n[key1, key2]\n", "", "--mode", "JUnit", "--key", "key1", "--key", "key2", "42");
   }

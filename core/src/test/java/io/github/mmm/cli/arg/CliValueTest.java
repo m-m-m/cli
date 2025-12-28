@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test of {@link CliValue}.
  */
-public class CliValueTest extends Assertions {
+class CliValueTest extends Assertions {
 
   /** Test of {@link CliValue}. */
   @Test
-  public void testDefaults() {
+  void testDefaults() {
 
     // arrange
     String value = "value";
@@ -35,7 +35,7 @@ public class CliValueTest extends Assertions {
 
   /** Test of {@link CliValue}. */
   @Test
-  public void testEndOptions() {
+  void testEndOptions() {
 
     // arrange
     String value = "its magic";

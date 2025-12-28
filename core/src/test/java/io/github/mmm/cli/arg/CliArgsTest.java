@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test of {@link CliArgs}.
  */
-public class CliArgsTest extends Assertions {
+class CliArgsTest extends Assertions {
 
   /** Test of {@link CliArgs#CliArgs(String...)}. */
   @Test
-  public void testParse() {
+  void testParse() {
 
     // arrange
     String[] args = { "-abc", "--help", "--foo-bar=some", "--foo-bar", "some", "-x=true", "--", "-file" };
@@ -72,7 +72,7 @@ public class CliArgsTest extends Assertions {
 
   /** Test of {@link CliArgs#CliArgs(String...)}. */
   @Test
-  public void testOptionValue() {
+  void testOptionValue() {
 
     // arrange
     String[] args = { "--option", "value" };
@@ -93,7 +93,7 @@ public class CliArgsTest extends Assertions {
 
   /** Test of {@link CliArgs#CliArgs(String...)} and {@link CliArgument#getValueType()}. */
   @Test
-  public void testValueType() {
+  void testValueType() {
 
     // arrange
     String[] args = { "first", "--option", "value1", "value2", "--key=value", "--", "arg" };
@@ -145,7 +145,7 @@ public class CliArgsTest extends Assertions {
 
   /** Test of {@link CliArgs#CliArgs(String...)} with edge-case. */
   @Test
-  public void testEdgeCase() {
+  void testEdgeCase() {
 
     // arrange
     String[] args = { "-", "-=", "=", ",", "--", "-f" };

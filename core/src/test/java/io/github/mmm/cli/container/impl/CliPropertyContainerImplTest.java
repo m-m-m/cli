@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test of {@link CliPropertyContainerImpl}.
  */
-public class CliPropertyContainerImplTest extends Assertions {
+class CliPropertyContainerImplTest extends Assertions {
 
   /** Test of {@link CliPropertyContainerImpl#compareTo(CliPropertyContainerImpl)}. */
   @Test
-  public void testCompareTo() {
+  void testCompareTo() {
 
     // arrange
     CliPropertyContainerImpl[] order = { keyword("0", 0), reqOptFlag("1"), reqOptNoFlag("2"), addOptFlag("3"),
